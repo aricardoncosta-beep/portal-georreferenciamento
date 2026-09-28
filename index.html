@@ -142,7 +142,7 @@ textarea{min-height:120px;font-family:var(--f-mono);font-size:13px}
 
 <div class="app">
   <aside class="side">
-    <div class="logo"><img src="assets/logo-terra-geotecnologia.png" alt="Terra Geotecnologia" width="560" height="113"><small>Portal de georreferenciamento</small></div>
+    <div class="logo"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Terra Geotecnologia" width="560" height="113"><small>Portal de georreferenciamento</small></div>
     <nav id="nav" aria-label="Seções">
       <button data-v="painel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Painel</button>
       <button data-v="servicos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20 9 6l5 9 3-5 3 10z"/></svg>Imóveis e serviços</button>
@@ -169,7 +169,7 @@ textarea{min-height:120px;font-family:var(--f-mono);font-size:13px}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-const LOGO=document.querySelector('.logo img').src;
+let LOGO='';(()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=877;c.height=177;c.getContext('2d').drawImage(im,195,68,877,177,0,0,877,177);LOGO=c.toDataURL('image/png');document.querySelector('.logo img').src=LOGO;if(typeof render==='function')render()};im.src='image.jpg'})();
 /* ============ Geodésia (SIRGAS 2000 / GRS80) ============ */
 const G={a:6378137,f:1/298.257222101};G.e2=G.f*(2-G.f);G.ep2=G.e2/(1-G.e2);
 const D2R=Math.PI/180,R2D=180/Math.PI,K0=0.9996;
