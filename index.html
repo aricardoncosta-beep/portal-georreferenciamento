@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Terra Geotecnologia Portal</title>
+<link rel="icon" href="assets/favicon.png">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style> .leaflet-pane, .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-tile-container, .leaflet-pane > svg, .leaflet-pane > canvas, .leaflet-zoom-box, .leaflet-image-layer, .leaflet-layer { position: absolute; left: 0; top: 0; } .leaflet-container { overflow: hidden; } .leaflet-tile, .leaflet-marker-icon, .leaflet-marker-shadow { -webkit-user-select: none; -moz-user-select: none; user-select: none; -webkit-user-drag: none; } .leaflet-tile::selection { background: transparent; } .leaflet-safari .leaflet-tile { image-rendering: -webkit-optimize-contrast; } .leaflet-safari .leaflet-tile-container { width: 1600px; height: 1600px; -webkit-transform-origin: 0 0; } .leaflet-marker-icon, .leaflet-marker-shadow { display: block; } .leaflet-container .leaflet-overlay-pane svg { max-width: none !important; max-height: none !important; } .leaflet-container .leaflet-marker-pane img, .leaflet-container .leaflet-shadow-pane img, .leaflet-container .leaflet-tile-pane img, .leaflet-container img.leaflet-image-layer, .leaflet-container .leaflet-tile { max-width: none !important; max-height: none !important; width: auto; padding: 0; } .leaflet-container img.leaflet-tile { mix-blend-mode: plus-lighter; } .leaflet-container.leaflet-touch-zoom { -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; } .leaflet-container.leaflet-touch-drag { -ms-touch-action: pinch-zoom; touch-action: none; touch-action: pinch-zoom; } .leaflet-container.leaflet-touch-drag.leaflet-touch-zoom { -ms-touch-action: none; touch-action: none; } .leaflet-container { -webkit-tap-highlight-color: transparent; } .leaflet-container a { -webkit-tap-highlight-color: rgba(51, 181, 229, 0.4); } .leaflet-tile { filter: inherit; visibility: hidden; } .leaflet-tile-loaded { visibility: inherit; } .leaflet-zoom-box { width: 0; height: 0; -moz-box-sizing: border-box; box-sizing: border-box; z-index: 800; } .leaflet-overlay-pane svg { -moz-user-select: none; } .leaflet-pane { z-index: 400; } .leaflet-tile-pane { z-index: 200; } .leaflet-overlay-pane { z-index: 400; } .leaflet-shadow-pane { z-index: 500; } .leaflet-marker-pane { z-index: 600; } .leaflet-tooltip-pane { z-index: 650; } .leaflet-popup-pane { z-index: 700; } .leaflet-map-pane canvas { z-index: 100; } .leaflet-map-pane svg { z-index: 200; } .leaflet-vml-shape { width: 1px; height: 1px; } .lvml { behavior: url(#default#VML); display: inline-block; position: absolute; } .leaflet-control { position: relative; z-index: 800; pointer-events: visiblePainted; pointer-events: auto; } .leaflet-top, .leaflet-bottom { position: absolute; z-index: 1000; pointer-events: none; } .leaflet-top { top: 0; } .leaflet-right { right: 0; } .leaflet-bottom { bottom: 0; } .leaflet-left { left: 0; } .leaflet-control { float: left; clear: both; } .leaflet-right .leaflet-control { float: right; } .leaflet-top .leaflet-control { margin-top: 10px; } .leaflet-bottom .leaflet-control { margin-bottom: 10px; } .leaflet-left .leaflet-control { margin-left: 10px; } .leaflet-right .leaflet-control { margin-right: 10px; } .leaflet-fade-anim .leaflet-popup { opacity: 0; -webkit-transition: opacity 0.2s linear; -moz-transition: opacity 0.2s linear; transition: opacity 0.2s linear; } .leaflet-fade-anim .leaflet-map-pane .leaflet-popup { opacity: 1; } .leaflet-zoom-animated { -webkit-transform-origin: 0 0; -ms-transform-origin: 0 0; transform-origin: 0 0; } svg.leaflet-zoom-animated { will-change: transform; } .leaflet-zoom-anim .leaflet-zoom-animated { -webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1); -moz-transition: -moz-transform 0.25s cubic-bezier(0,0,0.25,1); transition: transform 0.25s cubic-bezier(0,0,0.25,1); } .leaflet-zoom-anim .leaflet-tile, .leaflet-pan-anim .leaflet-tile { -webkit-transition: none; -moz-transition: none; transition: none; } .leaflet-zoom-anim .leaflet-zoom-hide { visibility: hidden; } .leaflet-interactive { cursor: pointer; } .leaflet-grab { cursor: -webkit-grab; cursor: -moz-grab; cursor: grab; } .leaflet-crosshair, .leaflet-crosshair .leaflet-interactive { cursor: crosshair; } .leaflet-popup-pane, .leaflet-control { cursor: auto; } .leaflet-dragging .leaflet-grab, .leaflet-dragging .leaflet-grab .leaflet-interactive, .leaflet-dragging .leaflet-marker-draggable { cursor: move; cursor: -webkit-grabbing; cursor: -moz-grabbing; cursor: grabbing; } .leaflet-marker-icon, .leaflet-marker-shadow, .leaflet-image-layer, .leaflet-pane > svg path, .leaflet-tile-container { pointer-events: none; } .leaflet-marker-icon.leaflet-interactive, .leaflet-image-layer.leaflet-interactive, .leaflet-pane > svg path.leaflet-interactive, svg.leaflet-image-layer.leaflet-interactive path { pointer-events: visiblePainted; pointer-events: auto; } .leaflet-container { background: #ddd; outline-offset: 1px; } .leaflet-container a { color: #0078A8; } .leaflet-zoom-box { border: 2px dotted #38f; background: rgba(255,255,255,0.5); } .leaflet-container { font-family: "Helvetica Neue", Arial, Helvetica, sans-serif; font-size: 12px; font-size: 0.75rem; line-height: 1.5; } .leaflet-bar { box-shadow: 0 1px 5px rgba(0,0,0,0.65); border-radius: 4px; } .leaflet-bar a { background-color: #fff; border-bottom: 1px solid #ccc; width: 26px; height: 26px; line-height: 26px; display: block; text-align: center; text-decoration: none; color: black; } .leaflet-bar a, .leaflet-control-layers-toggle { background-position: 50% 50%; background-repeat: no-repeat; display: block; } .leaflet-bar a:hover, .leaflet-bar a:focus { background-color: #f4f4f4; } .leaflet-bar a:first-child { border-top-left-radius: 4px; border-top-right-radius: 4px; } .leaflet-bar a:last-child { border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; border-bottom: none; } .leaflet-bar a.leaflet-disabled { cursor: default; background-color: #f4f4f4; color: #bbb; } .leaflet-touch .leaflet-bar a { width: 30px; height: 30px; line-height: 30px; } .leaflet-touch .leaflet-bar a:first-child { border-top-left-radius: 2px; border-top-right-radius: 2px; } .leaflet-touch .leaflet-bar a:last-child { border-bottom-left-radius: 2px; border-bottom-right-radius: 2px; } .leaflet-control-zoom-in, .leaflet-control-zoom-out { font: bold 18px 'Lucida Console', Monaco, monospace; text-indent: 1px; } .leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out { font-size: 22px; } .leaflet-control-layers { box-shadow: 0 1px 5px rgba(0,0,0,0.4); background: #fff; border-radius: 5px; } .leaflet-control-layers-toggle { background-image: url(images/layers.png); width: 36px; height: 36px; } .leaflet-retina .leaflet-control-layers-toggle { background-image: url(images/layers-2x.png); background-size: 26px 26px; } .leaflet-touch .leaflet-control-layers-toggle { width: 44px; height: 44px; } .leaflet-control-layers .leaflet-control-layers-list, .leaflet-control-layers-expanded .leaflet-control-layers-toggle { display: none; } .leaflet-control-layers-expanded .leaflet-control-layers-list { display: block; position: relative; } .leaflet-control-layers-expanded { padding: 6px 10px 6px 6px; color: #333; background: #fff; } .leaflet-control-layers-scrollbar { overflow-y: scroll; overflow-x: hidden; padding-right: 5px; } .leaflet-control-layers-selector { margin-top: 2px; position: relative; top: 1px; } .leaflet-control-layers label { display: block; font-size: 13px; font-size: 1.08333em; } .leaflet-control-layers-separator { height: 0; border-top: 1px solid #ddd; margin: 5px -10px 5px -6px; } .leaflet-default-icon-path { background-image: url(images/marker-icon.png); } .leaflet-container .leaflet-control-attribution { background: #fff; background: rgba(255, 255, 255, 0.8); margin: 0; } .leaflet-control-attribution, .leaflet-control-scale-line { padding: 0 5px; color: #333; line-height: 1.4; } .leaflet-control-attribution a { text-decoration: none; } .leaflet-control-attribution a:hover, .leaflet-control-attribution a:focus { text-decoration: underline; } .leaflet-attribution-flag { display: inline !important; vertical-align: baseline !important; width: 1em; height: 0.6669em; } .leaflet-left .leaflet-control-scale { margin-left: 5px; } .leaflet-bottom .leaflet-control-scale { margin-bottom: 5px; } .leaflet-control-scale-line { border: 2px solid #777; border-top: none; line-height: 1.1; padding: 2px 5px 1px; white-space: nowrap; -moz-box-sizing: border-box; box-sizing: border-box; background: rgba(255, 255, 255, 0.8); text-shadow: 1px 1px #fff; } .leaflet-control-scale-line:not(:first-child) { border-top: 2px solid #777; border-bottom: none; margin-top: -2px; } .leaflet-control-scale-line:not(:first-child):not(:last-child) { border-bottom: 2px solid #777; } .leaflet-touch .leaflet-control-attribution, .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar { box-shadow: none; } .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar { border: 2px solid rgba(0,0,0,0.2); background-clip: padding-box; } .leaflet-popup { position: absolute; text-align: center; margin-bottom: 20px; } .leaflet-popup-content-wrapper { padding: 1px; text-align: left; border-radius: 12px; } .leaflet-popup-content { margin: 13px 24px 13px 20px; line-height: 1.3; font-size: 13px; font-size: 1.08333em; min-height: 1px; } .leaflet-popup-content p { margin: 17px 0; margin: 1.3em 0; } .leaflet-popup-tip-container { width: 40px; height: 20px; position: absolute; left: 50%; margin-top: -1px; margin-left: -20px; overflow: hidden; pointer-events: none; } .leaflet-popup-tip { width: 17px; height: 17px; padding: 1px; margin: -10px auto 0; pointer-events: auto; -webkit-transform: rotate(45deg); -moz-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); } .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: white; color: #333; box-shadow: 0 3px 14px rgba(0,0,0,0.4); } .leaflet-container a.leaflet-popup-close-button { position: absolute; top: 0; right: 0; border: none; text-align: center; width: 24px; height: 24px; font: 16px/24px Tahoma, Verdana, sans-serif; color: #757575; text-decoration: none; background: transparent; } .leaflet-container a.leaflet-popup-close-button:hover, .leaflet-container a.leaflet-popup-close-button:focus { color: #585858; } .leaflet-popup-scrolled { overflow: auto; } .leaflet-oldie .leaflet-popup-content-wrapper { -ms-zoom: 1; } .leaflet-oldie .leaflet-popup-tip { width: 24px; margin: 0 auto; -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)"; filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678); } .leaflet-oldie .leaflet-control-zoom, .leaflet-oldie .leaflet-control-layers, .leaflet-oldie .leaflet-popup-content-wrapper, .leaflet-oldie .leaflet-popup-tip { border: 1px solid #999; } .leaflet-div-icon { background: #fff; border: 1px solid #666; } .leaflet-tooltip { position: absolute; padding: 6px; background-color: #fff; border: 1px solid #fff; border-radius: 3px; color: #222; white-space: nowrap; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; pointer-events: none; box-shadow: 0 1px 3px rgba(0,0,0,0.4); } .leaflet-tooltip.leaflet-interactive { cursor: pointer; pointer-events: auto; } .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { position: absolute; pointer-events: none; border: 6px solid transparent; background: transparent; content: ""; } .leaflet-tooltip-bottom { margin-top: 6px; } .leaflet-tooltip-top { margin-top: -6px; } .leaflet-tooltip-bottom:before, .leaflet-tooltip-top:before { left: 50%; margin-left: -6px; } .leaflet-tooltip-top:before { bottom: 0; margin-bottom: -12px; border-top-color: #fff; } .leaflet-tooltip-bottom:before { top: 0; margin-top: -12px; margin-left: -6px; border-bottom-color: #fff; } .leaflet-tooltip-left { margin-left: -6px; } .leaflet-tooltip-right { margin-left: 6px; } .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { top: 50%; margin-top: -6px; } .leaflet-tooltip-left:before { right: 0; margin-right: -12px; border-left-color: #fff; } .leaflet-tooltip-right:before { left: 0; margin-left: -12px; border-right-color: #fff; } @media print { .leaflet-control { -webkit-print-color-adjust: exact; print-color-adjust: exact; } } </style>
+<style>
+:root{
+  --bg:#F2F4F0; --surface:#FFFFFF; --surface-2:#E8ECE6; --ink:#16211D; --ink-2:#4A5A53; --line:#CCD5CE;
+  --brand:#24473A; --brand-ink:#FFFFFF; --accent:#1F9E4A; --accent-ink:#FFFFFF; --accent-soft:#E2F3E7; --mark:#F0C43A;
+  --ok:#2E7D4F; --warn:#B7791F; --crit:#B3261E; --info:#2B6CB0;
+  --radius:8px; --side:232px;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",Roboto,Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;--bg:#0F1614;--surface:#18221F;--surface-2:#202D29;--ink:#E3EAE6;--ink-2:#9DB0A7;--line:#2E3D38;
+  --brand:#8FC9B2;--brand-ink:#0F1614;--accent:#4CC474;--accent-ink:#0B1A10;--accent-soft:#1C3325;--ok:#6CC592;--warn:#E6B45A;--crit:#F08A80;--info:#7FB2EA;}}
+:root[data-theme="dark"]{
+  color-scheme:dark;--bg:#0F1614;--surface:#18221F;--surface-2:#202D29;--ink:#E3EAE6;--ink-2:#9DB0A7;--line:#2E3D38;
+  --brand:#8FC9B2;--brand-ink:#0F1614;--accent:#4CC474;--accent-ink:#0B1A10;--accent-soft:#1C3325;--ok:#6CC592;--warn:#E6B45A;--crit:#F08A80;--info:#7FB2EA;}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body)}
+*{box-sizing:border-box}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;letter-spacing:.01em;text-wrap:balance;margin:0}
+h1{font-size:30px;line-height:1.1} h2{font-size:22px} h3{font-size:18px}
+.mono,td.num,.coord{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:13px}
+a{color:var(--info)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.app{display:grid;grid-template-columns:var(--side) 1fr;min-height:100%}
+.side{background:var(--brand);color:var(--brand-ink);padding:20px 14px;display:flex;flex-direction:column;gap:22px;position:sticky;top:0;height:100vh}
+:root[data-theme="dark"] .side{background:var(--surface)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .side{background:var(--surface)}}
+:root[data-theme="dark"] .side,:root[data-theme="dark"] .side *{--brand-ink:var(--ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .side{--brand-ink:var(--ink)}}
+.logo{display:flex;flex-direction:column;gap:8px}
+.logo img{display:block;width:100%;height:auto;background:#fff;border-radius:6px;padding:8px 10px}
+.logo small{opacity:.8;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase}
+nav{display:flex;flex-direction:column;gap:2px}
+nav button{background:none;border:0;color:inherit;text-align:left;padding:9px 12px;border-radius:6px;cursor:pointer;display:flex;gap:10px;align-items:center;opacity:.85}
+nav button:hover{background:rgba(255,255,255,.08);opacity:1}
+nav button[aria-current="true"]{background:rgba(255,255,255,.14);opacity:1;box-shadow:inset 3px 0 0 var(--accent)}
+nav svg{width:18px;height:18px;flex:none}
+.cred{margin-top:auto;font-size:12px;line-height:1.45;opacity:.8;border-top:1px solid rgba(255,255,255,.18);padding-top:14px}
+.cred .mono{font-size:11.5px}
+.main{min-width:0;padding-block:24px 40px;padding-inline:28px;display:flex;flex-direction:column;gap:20px}
+.topbar{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-2);font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--surface);padding:7px 13px;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;display:inline-flex;gap:6px;align-items:center}
+.btn:hover{border-color:var(--ink-2)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.sm{padding:4px 9px;font-size:13px}
+.btn.danger{color:var(--crit)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.kpi .v{font-family:var(--f-display);font-size:34px;font-weight:600;line-height:1}
+.kpi .l{color:var(--ink-2);font-size:13px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);text-align:left;font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.num{text-align:right;white-space:nowrap}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap;border:1px solid currentColor}
+.s-orc{color:var(--ink-2)} .s-campo{color:var(--info)} .s-proc{color:var(--warn)} .s-prot{color:var(--accent)} .s-cert{color:var(--ok)} .s-reg{color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.tag-ex{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--warn);border:1px dashed var(--warn);padding:1px 6px;border-radius:4px;margin-left:6px}
+.muted{color:var(--ink-2)}
+.pipeline{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.pipeline div{background:var(--surface-2);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:2px}
+.pipeline b{font-family:var(--f-display);font-size:26px;line-height:1}
+.pipeline span{font-size:12px;color:var(--ink-2)}
+
+/* Map */
+.mapwrap{display:grid;grid-template-columns:320px 1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;height:calc(100vh - 150px);min-height:520px;background:var(--surface)}
+.mapside{border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.mapside .hd{padding:12px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.plist{overflow:auto;flex:1}
+.plist button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:10px 12px;cursor:pointer}
+.plist button:hover{background:var(--surface-2)}
+.plist button[aria-selected="true"]{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.plist small{color:var(--ink-2);display:block}
+#map{height:100%;min-height:0;background:#2a332f}
+.maptool{position:absolute;z-index:500;top:10px;left:54px;display:flex;gap:6px;flex-wrap:wrap}
+.mapcol{position:relative;min-height:0}
+.maptool .btn{box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.maptool .btn.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.coordbar{position:absolute;z-index:500;bottom:8px;left:8px;background:rgba(15,22,20,.82);color:#e8efe9;padding:4px 8px;border-radius:4px;font:12px var(--f-mono)}
+.mapnote{position:absolute;z-index:500;top:52px;left:54px;right:60px;background:var(--accent-soft);color:var(--ink);border:1px solid var(--accent);padding:8px 10px;border-radius:6px;font-size:13px;max-width:460px}
+.vlabel{background:none;border:0;box-shadow:none;color:#fff;font:600 11px var(--f-mono);text-shadow:0 0 3px #000,0 0 3px #000}
+.leaflet-control-layers{font:13px var(--f-body)}
+.leaflet-tooltip.vlabel::before{display:none}
+
+/* forms / dialog */
+dialog{border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:0;width:min(640px,calc(100vw - 32px));max-height:calc(100vh - 40px)}
+dialog::backdrop{background:rgba(10,16,14,.55)}
+dialog form{display:flex;flex-direction:column;gap:14px;padding:20px}
+.fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600;color:var(--ink-2)}
+input,select,textarea{border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:7px 9px;font-weight:400;color:var(--ink);min-width:0}
+textarea{min-height:120px;font-family:var(--f-mono);font-size:13px}
+.full{grid-column:1/-1}
+.memorial{white-space:pre-wrap;font-family:Georgia,"Times New Roman",serif;font-size:15px;line-height:1.65;max-width:78ch;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px}
+.memorial h3{text-align:center;font-family:Georgia,serif;letter-spacing:.08em;margin-bottom:10px}
+.links{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.links a{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px}
+.links a:hover{border-color:var(--accent)}
+.links b{font-family:var(--f-display);font-size:19px;font-weight:600}
+.links span{font-size:13px;color:var(--ink-2)}
+.toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));right:18px;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:6px;font-weight:600;z-index:3000}
+.empty{padding:26px;text-align:center;color:var(--ink-2)}
+.hint{font-size:13px;color:var(--ink-2)}
+
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{position:sticky;top:env(safe-area-inset-top,0px);height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:10px 16px;gap:10px;z-index:1000}
+  nav{flex-direction:row;overflow-x:auto;gap:2px;width:100%}
+  nav button{white-space:nowrap;padding:7px 10px}
+  nav button[aria-current="true"]{box-shadow:inset 0 -3px 0 var(--accent)}
+  .cred{display:none}
+  .main{padding-inline:16px}
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g2{grid-template-columns:1fr}
+  .pipeline{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .mapwrap{grid-template-columns:1fr;grid-template-rows:auto 60vh;height:auto}
+  .mapside{border-right:0;border-bottom:1px solid var(--line)}
+  .plist{max-height:180px}
+  .fgrid{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app">
+  <aside class="side">
+    <div class="logo"><img src="assets/logo-terra-geotecnologia.png" alt="Terra Geotecnologia" width="560" height="113"><small>Portal de georreferenciamento</small></div>
+    <nav id="nav" aria-label="Seções">
+      <button data-v="painel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>Painel</button>
+      <button data-v="servicos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20 9 6l5 9 3-5 3 10z"/></svg>Imóveis e serviços</button>
+      <button data-v="clientes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M16 4a4 4 0 0 1 0 8M22 21c0-3-1.5-5-4-5.6"/></svg>Clientes</button>
+      <button data-v="mapa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3 3 6v15l6-3 6 3 6-3V3l-6 3z"/><path d="M9 3v15M15 6v15"/></svg>Mapa</button>
+      <button data-v="pecas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h8"/></svg>Peças técnicas</button>
+      <button data-v="consultas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-5-5"/></svg>Consultas</button>
+    </nav>
+    <div class="cred">
+      <div><b>André Ricardo N. Costa</b></div>
+      <div>Técnico em Agrimensura</div>
+      <div class="mono">CRT/MG 94464634672</div>
+      <div class="mono">INCRA · código DCCM</div>
+      <div style="margin-top:6px">Paracatu · MG</div>
+      <div class="row" style="margin-top:10px"><button class="btn sm" id="btnTheme" type="button" style="color:var(--ink)">Tema</button></div>
+    </div>
+  </aside>
+
+  <main class="main" id="main"></main>
+</div>
+
+<dialog id="dlg"><form method="dialog" id="dlgForm"></form></dialog>
+<input type="file" id="fileIn" hidden accept=".csv,.txt,.kml,.geojson,.json">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const LOGO=document.querySelector('.logo img').src;
+/* ============ Geodésia (SIRGAS 2000 / GRS80) ============ */
+const G={a:6378137,f:1/298.257222101};G.e2=G.f*(2-G.f);G.ep2=G.e2/(1-G.e2);
+const D2R=Math.PI/180,R2D=180/Math.PI,K0=0.9996;
+function zoneOf(lon){return Math.floor((lon+180)/6)+1}
+function mc(zone){return (zone-1)*6-180+3}
+function ll2utm(lat,lon,zone){
+  zone=zone||zoneOf(lon);const {a,e2,ep2}=G,phi=lat*D2R,l0=mc(zone)*D2R,l=lon*D2R;
+  const s=Math.sin(phi),c=Math.cos(phi),t=Math.tan(phi);
+  const N=a/Math.sqrt(1-e2*s*s),T=t*t,C=ep2*c*c,A=c*(l-l0),e4=e2*e2,e6=e4*e2;
+  const M=a*((1-e2/4-3*e4/64-5*e6/256)*phi-(3*e2/8+3*e4/32+45*e6/1024)*Math.sin(2*phi)+(15*e4/256+45*e6/1024)*Math.sin(4*phi)-(35*e6/3072)*Math.sin(6*phi));
+  const E=K0*N*(A+(1-T+C)*A**3/6+(5-18*T+T*T+72*C-58*ep2)*A**5/120)+500000;
+  let Nn=K0*(M+N*t*(A*A/2+(5-T+9*C+4*C*C)*A**4/24+(61-58*T+T*T+600*C-330*ep2)*A**6/720));
+  if(lat<0)Nn+=10000000;return {E,N:Nn,zone,south:lat<0};
+}
+function utm2ll(E,N,zone,south=true){
+  const {a,e2,ep2}=G,e4=e2*e2,e6=e4*e2,x=E-500000,y=south?N-10000000:N;
+  const M=y/K0,mu=M/(a*(1-e2/4-3*e4/64-5*e6/256)),e1=(1-Math.sqrt(1-e2))/(1+Math.sqrt(1-e2));
+  const p1=mu+(3*e1/2-27*e1**3/32)*Math.sin(2*mu)+(21*e1*e1/16-55*e1**4/32)*Math.sin(4*mu)+(151*e1**3/96)*Math.sin(6*mu)+(1097*e1**4/512)*Math.sin(8*mu);
+  const s=Math.sin(p1),c=Math.cos(p1),t=Math.tan(p1);
+  const N1=a/Math.sqrt(1-e2*s*s),T1=t*t,C1=ep2*c*c,R1=a*(1-e2)/Math.pow(1-e2*s*s,1.5),D=x/(N1*K0);
+  const lat=p1-(N1*t/R1)*(D*D/2-(5+3*T1+10*C1-4*C1*C1-9*ep2)*D**4/24+(61+90*T1+298*C1+45*T1*T1-252*ep2-3*C1*C1)*D**6/720);
+  const lon=mc(zone)*D2R+(D-(1+2*T1+C1)*D**3/6+(5-2*C1+28*T1-3*C1*C1+8*ep2+24*T1*T1)*D**5/120)/c;
+  return {lat:lat*R2D,lon:lon*R2D};
+}
+function ecef(lat,lon,h=0){const {a,e2}=G,p=lat*D2R,l=lon*D2R,N=a/Math.sqrt(1-e2*Math.sin(p)**2);
+  return [(N+h)*Math.cos(p)*Math.cos(l),(N+h)*Math.cos(p)*Math.sin(l),(N*(1-e2)+h)*Math.sin(p)]}
+/* Sistema Geodésico Local (plano topográfico na origem = centroide) */
+function toSGL(vs){
+  const lat0=vs.reduce((s,v)=>s+v.lat,0)/vs.length,lon0=vs.reduce((s,v)=>s+v.lon,0)/vs.length;
+  const o=ecef(lat0,lon0,0),p=lat0*D2R,l=lon0*D2R,sp=Math.sin(p),cp=Math.cos(p),sl=Math.sin(l),cl=Math.cos(l);
+  return vs.map(v=>{const q=ecef(v.lat,v.lon,v.h||0),dx=q[0]-o[0],dy=q[1]-o[1],dz=q[2]-o[2];
+    return {x:-sl*dx+cl*dy,y:-sp*cl*dx-sp*sl*dy+cp*dz}});
+}
+function shoelace(pts){let s=0;for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length];s+=a.x*b.y-b.x*a.y}return Math.abs(s)/2}
+function perim(pts){let s=0;for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length];s+=Math.hypot(b.x-a.x,b.y-a.y)}return s}
+function az(a,b){let t=Math.atan2(b.x-a.x,b.y-a.y)*R2D;return t<0?t+360:t}
+function dms(d){let g=Math.floor(d),mf=(d-g)*60,m=Math.floor(mf),s=(mf-m)*60;if(s>=59.995){s=0;m++}if(m>=60){m=0;g++}
+  return `${g}°${String(m).padStart(2,'0')}'${s.toFixed(2).padStart(5,'0').replace('.',',')}"`}
+function dmsLat(d,neg='S',pos='N'){const h=d<0?neg:pos;return dms(Math.abs(d)).replace('"','"')+' '+h}
+function geom(im){
+  const vs=im.vertices||[];if(vs.length<3)return null;
+  const zone=im.fuso||zoneOf(vs[0].lon);
+  const u=vs.map(v=>{const r=ll2utm(v.lat,v.lon,zone);return {x:r.E,y:r.N}});
+  const sgl=toSGL(vs);
+  return {zone,utm:u,areaUTM:shoelace(u),perUTM:perim(u),areaSGL:shoelace(sgl),perSGL:perim(sgl),
+    segs:u.map((a,i)=>{const b=u[(i+1)%u.length];return {az:az(a,b),d:Math.hypot(b.x-a.x,b.y-a.y)}})};
+}
+const nf=(n,d=2)=>n.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const ha=m2=>nf(m2/10000,4);
+
+/* ============ Dados ============ */
+const KEY='terra-geo-portal-v1';
+const STATUS=[['orc','Orçamento'],['campo','Campo'],['proc','Processamento'],['prot','Protocolado SIGEF'],['cert','Certificado'],['reg','Registrado']];
+const SERV=['Georreferenciamento (SIGEF)','Retificação de área','Desmembramento','Unificação','Usucapião','Levantamento planialtimétrico','CAR','Loteamento urbano','Regularização REURB','Demarcação de divisas'];
+const uid=()=>Math.random().toString(36).slice(2,10);
+function ring(lat,lon,pts){return pts.map(([dn,de])=>({lat:lat+dn/111320,lon:lon+de/(111320*Math.cos(lat*D2R))}))}
+function sample(){
+  const c1=uid(),c2=uid(),c3=uid();
+  const mk=(vs,conf)=>vs.map((v,i)=>({...v,cod:`DCCM-${i%3===2?'P':'M'}-${String(i+1).padStart(4,'0')}`,tipo:i%3===2?'P':'M',metodo:'PG6',limite:'LA1',sigma:[0.02,0.02,0.04],confr:conf[i%conf.length]}));
+  return {v:1,clientes:[
+    {id:c1,nome:'João Batista de Oliveira',doc:'000.000.000-00',tel:'(38) 99999-0001',email:'',municipio:'Paracatu/MG',ex:true},
+    {id:c2,nome:'Agropecuária Vereda Grande Ltda',doc:'00.000.000/0001-00',tel:'(38) 99999-0002',email:'',municipio:'Unaí/MG',ex:true},
+    {id:c3,nome:'Maria Aparecida Souza',doc:'000.000.000-00',tel:'(38) 99999-0003',email:'',municipio:'Paracatu/MG',ex:true}],
+  imoveis:[
+    {id:uid(),clienteId:c1,nome:'Fazenda Santa Rita',municipio:'Paracatu/MG',matricula:'12.345',cns:'04.583-0',ccir:'',car:'MG-3147006-XXXX',servico:SERV[0],status:'proc',valor:9800,prazo:'2026-10-30',fuso:23,ex:true,
+     vertices:mk(ring(-17.1520,-46.9310,[[0,0],[210,480],[40,1120],[-620,1260],[-980,760],[-890,120],[-420,-210]]),['Fazenda Boa Vista — Mat. 10.221','Córrego do Espalha','Estrada municipal PCT-150','Sítio Três Irmãos — Mat. 8.004'])},
+    {id:uid(),clienteId:c2,nome:'Fazenda Vereda Grande',municipio:'Unaí/MG',matricula:'45.910',cns:'04.642-4',ccir:'',car:'',servico:SERV[0],status:'prot',valor:18500,prazo:'2026-11-15',fuso:23,ex:true,
+     vertices:mk(ring(-16.4050,-46.8950,[[0,0],[300,1500],[-900,2100],[-1900,1500],[-1700,200]]),['Rio Preto','Fazenda Capão Seco — Mat. 30.117','Rodovia MG-188'])},
+    {id:uid(),clienteId:c3,nome:'Sítio Recanto do Cerrado',municipio:'Paracatu/MG',matricula:'22.017',cns:'04.583-0',ccir:'',car:'',servico:'Desmembramento',status:'campo',valor:4200,prazo:'2026-10-12',fuso:23,ex:true,
+     vertices:mk(ring(-17.2710,-46.8480,[[0,0],[120,260],[-60,420],[-250,300],[-200,40]]),['Estrada vicinal','Chácara Pôr do Sol — Mat. 19.552'])}
+  ]};
+}
+let DB;function load(){try{DB=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!DB||!DB.imoveis)DB=sample()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}}
+load();
+const cli=id=>DB.clientes.find(c=>c.id===id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function pill(s){const t=STATUS.find(x=>x[0]===s);return `<span class="pill s-${s}">${t?t[1]:s}</span>`}
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2400)}
+function download(name,text,type='text/plain'){
+  try{const b=new Blob([text],{type});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();a.remove()}catch(e){}
+}
+async function copy(text){try{await navigator.clipboard.writeText(text);toast('Copiado')}catch(e){toast('Não foi possível copiar — selecione o texto manualmente')}}
+
+/* ============ Navegação ============ */
+let VIEW='painel',SEL=null,map=null;
+const main=document.getElementById('main');
+document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)go(b.dataset.v)});
+function go(v,sel){VIEW=v;if(sel!==undefined)SEL=sel;try{localStorage.setItem(KEY+'-view',v)}catch(e){}
+  document.querySelectorAll('#nav button').forEach(b=>b.setAttribute('aria-current',b.dataset.v===v));render()}
+function render(){if(map){map.remove();map=null}({painel:vPainel,servicos:vServicos,clientes:vClientes,mapa:vMapa,pecas:vPecas,consultas:vConsultas})[VIEW]()}
+
+function head(eb,title,actions=''){return `<div class="topbar"><div><div class="eyebrow">${eb}</div><h1>${title}</h1></div><div class="row">${actions}</div></div>`}
+
+/* ---- Painel ---- */
+function vPainel(){
+  const ims=DB.imoveis;let area=0;ims.forEach(i=>{const g=geom(i);if(g)area+=g.areaSGL});
+  const aberto=ims.filter(i=>!['cert','reg'].includes(i.status));
+  const receita=aberto.reduce((s,i)=>s+(+i.valor||0),0);
+  const prox=[...aberto].filter(i=>i.prazo).sort((a,b)=>a.prazo.localeCompare(b.prazo)).slice(0,6);
+  const hoje=new Date().toISOString().slice(0,10);
+  const hasEx=DB.imoveis.some(i=>i.ex)||DB.clientes.some(c=>c.ex);
+  main.innerHTML=head('Visão geral','Painel',`<button class="btn" onclick="backup()">Backup</button><button class="btn" onclick="restore()">Restaurar</button><button class="btn pri" onclick="editImovel()">+ Novo serviço</button>`)+
+  (hasEx?`<div class="panel" style="background:var(--accent-soft);border-color:var(--accent)"><b>Dados de exemplo carregados.</b> Os clientes e imóveis marcados como <span class="tag-ex">exemplo</span> servem só para demonstrar o portal. <button class="btn sm" onclick="clearEx()">Remover exemplos</button></div>`:'')+
+  `<div class="grid g4">
+    <div class="panel kpi"><div class="v">${DB.clientes.length}</div><div class="l">Clientes</div></div>
+    <div class="panel kpi"><div class="v">${aberto.length}</div><div class="l">Serviços em andamento</div></div>
+    <div class="panel kpi"><div class="v">${nf(area/10000,1)}</div><div class="l">Hectares georreferenciados (SGL)</div></div>
+    <div class="panel kpi"><div class="v">R$ ${nf(receita/1000,1)}k</div><div class="l">A receber (em andamento)</div></div>
+  </div>
+  <div class="panel"><h3 style="margin-bottom:10px">Fluxo dos serviços</h3><div class="pipeline">${STATUS.map(([k,l])=>`<div><b>${ims.filter(i=>i.status===k).length}</b><span>${l}</span></div>`).join('')}</div></div>
+  <div class="grid g2">
+    <div class="panel"><h3 style="margin-bottom:8px">Próximos prazos</h3>${prox.length?`<div class="tablewrap"><table><tr><th>Imóvel</th><th>Etapa</th><th>Prazo</th></tr>${prox.map(i=>`<tr><td><a href="#" onclick="go('mapa','${i.id}');return false">${esc(i.nome)}</a><br><small class="muted">${esc(cli(i.clienteId)?.nome)}</small></td><td>${pill(i.status)}</td><td class="num" style="color:${i.prazo<hoje?'var(--crit)':'inherit'}">${i.prazo.split('-').reverse().join('/')}</td></tr>`).join('')}</table></div>`:'<div class="empty">Nenhum prazo em aberto.</div>'}</div>
+    <div class="panel"><h3 style="margin-bottom:8px">Atalhos</h3><div class="grid" style="gap:8px">
+      <button class="btn" onclick="go('mapa')">Abrir mapa com imagem de satélite</button>
+      <button class="btn" onclick="go('pecas')">Gerar memorial descritivo / planilha SIGEF</button>
+      <button class="btn" onclick="go('consultas')">Consultar SIGEF, CAR, SNCR/CCIR</button>
+      <p class="hint">Os dados ficam salvos neste navegador. Use <b>Backup</b> para guardar uma cópia (arquivo .json) e <b>Restaurar</b> para levar para outro computador.</p></div></div>
+  </div>`;
+}
+function clearEx(){DB.imoveis=DB.imoveis.filter(i=>!i.ex);DB.clientes=DB.clientes.filter(c=>!c.ex);save();render();toast('Exemplos removidos')}
+function backup(){const t=JSON.stringify(DB,null,1);download('terra-geo-backup-'+new Date().toISOString().slice(0,10)+'.json',t,'application/json');toast('Backup gerado')}
+function restore(){pickFile('.json',txt=>{try{const d=JSON.parse(txt);if(!d.imoveis)throw 0;DB=d;save();render();toast('Backup restaurado')}catch(e){toast('Arquivo de backup inválido')}})}
+function pickFile(acc,cb){const f=document.getElementById('fileIn');f.accept=acc;f.value='';f.onchange=()=>{const file=f.files[0];if(!file)return;const r=new FileReader();r.onload=()=>cb(r.result,file.name);r.readAsText(file,'utf-8')};f.click()}
+
+/* ---- Serviços ---- */
+function vServicos(){
+  main.innerHTML=head('Cadastro','Imóveis e serviços',`<button class="btn pri" onclick="editImovel()">+ Novo serviço</button>`)+
+  `<div class="panel"><div class="row" style="margin-bottom:10px"><input id="q" placeholder="Buscar imóvel, cliente, matrícula…" style="flex:1;min-width:200px"><select id="fs"><option value="">Todas as etapas</option>${STATUS.map(s=>`<option value="${s[0]}">${s[1]}</option>`).join('')}</select></div><div class="tablewrap" id="tbl"></div></div>`;
+  const draw=()=>{const q=document.getElementById('q').value.toLowerCase(),fs=document.getElementById('fs').value;
+    const rows=DB.imoveis.filter(i=>(!fs||i.status===fs)&&(!q||[i.nome,i.matricula,i.municipio,cli(i.clienteId)?.nome].join(' ').toLowerCase().includes(q)));
+    document.getElementById('tbl').innerHTML=rows.length?`<table><tr><th>Imóvel</th><th>Cliente</th><th>Serviço</th><th>Matrícula</th><th>Área (ha)</th><th>Etapa</th><th>Valor</th><th></th></tr>${rows.map(i=>{const g=geom(i);return `<tr><td><b>${esc(i.nome)}</b>${i.ex?'<span class="tag-ex">exemplo</span>':''}<br><small class="muted">${esc(i.municipio)}</small></td><td>${esc(cli(i.clienteId)?.nome)}</td><td>${esc(i.servico)}</td><td class="mono">${esc(i.matricula)}</td><td class="num">${g?ha(g.areaSGL):'—'}</td><td>${pill(i.status)}</td><td class="num">${i.valor?'R$ '+nf(+i.valor):''}</td><td><div class="row" style="flex-wrap:nowrap"><button class="btn sm" onclick="go('mapa','${i.id}')">Mapa</button><button class="btn sm" onclick="editImovel('${i.id}')">Editar</button></div></td></tr>`}).join('')}</table>`:'<div class="empty">Nenhum serviço encontrado.</div>'};
+  document.getElementById('q').oninput=draw;document.getElementById('fs').onchange=draw;draw();
+}
+function editImovel(id){
+  const i=id?DB.imoveis.find(x=>x.id===id):{status:'orc',servico:SERV[0],fuso:23,vertices:[]};
+  if(!DB.clientes.length){toast('Cadastre um cliente primeiro');return editCliente()}
+  openDlg(`<h2>${id?'Editar serviço':'Novo serviço'}</h2><div class="fgrid">
+   <label class="full">Denominação do imóvel<input name="nome" required value="${esc(i.nome)}" placeholder="Fazenda …"></label>
+   <label>Cliente<select name="clienteId">${DB.clientes.map(c=>`<option value="${c.id}" ${c.id===i.clienteId?'selected':''}>${esc(c.nome)}</option>`).join('')}</select></label>
+   <label>Município/UF<input name="municipio" value="${esc(i.municipio||'Paracatu/MG')}"></label>
+   <label>Serviço<select name="servico">${SERV.map(s=>`<option ${s===i.servico?'selected':''}>${s}</option>`).join('')}</select></label>
+   <label>Etapa<select name="status">${STATUS.map(s=>`<option value="${s[0]}" ${s[0]===i.status?'selected':''}>${s[1]}</option>`).join('')}</select></label>
+   <label>Matrícula<input name="matricula" value="${esc(i.matricula)}"></label>
+   <label>CNS do cartório<input name="cns" value="${esc(i.cns)}"></label>
+   <label>Código SNCR / CCIR<input name="ccir" value="${esc(i.ccir)}"></label>
+   <label>Recibo CAR<input name="car" value="${esc(i.car)}"></label>
+   <label>Valor (R$)<input name="valor" type="number" step="0.01" value="${esc(i.valor)}"></label>
+   <label>Prazo<input name="prazo" type="date" value="${esc(i.prazo)}"></label>
+   <label>Fuso UTM<select name="fuso">${[22,23,24].map(z=>`<option ${z==i.fuso?'selected':''}>${z}</option>`).join('')}</select></label>
+  </div><div class="row" style="justify-content:space-between">${id?`<button class="btn danger" type="button" id="del">Excluir</button>`:'<span></span>'}<div class="row"><button class="btn" value="cancel" formnovalidate>Cancelar</button><button class="btn pri" value="ok">Salvar</button></div></div>`,
+  f=>{Object.assign(i,f,{fuso:+f.fuso});delete i.ex;if(!id){i.id=uid();DB.imoveis.push(i)}save();render();toast('Serviço salvo')},
+  ()=>{const d=document.getElementById('del');if(d)d.onclick=()=>{if(d.dataset.c){DB.imoveis=DB.imoveis.filter(x=>x.id!==id);save();dlg.close();render();toast('Excluído')}else{d.dataset.c=1;d.textContent='Confirmar exclusão'}}});
+}
+
+/* ---- Clientes ---- */
+function vClientes(){
+  main.innerHTML=head('Cadastro','Clientes',`<button class="btn pri" onclick="editCliente()">+ Novo cliente</button>`)+
+  `<div class="panel tablewrap">${DB.clientes.length?`<table><tr><th>Nome / Razão social</th><th>CPF / CNPJ</th><th>Telefone</th><th>Município</th><th>Imóveis</th><th></th></tr>${DB.clientes.map(c=>`<tr><td><b>${esc(c.nome)}</b>${c.ex?'<span class="tag-ex">exemplo</span>':''}<br><small class="muted">${esc(c.email)}</small></td><td class="mono">${esc(c.doc)}</td><td class="mono">${esc(c.tel)}</td><td>${esc(c.municipio)}</td><td class="num">${DB.imoveis.filter(i=>i.clienteId===c.id).length}</td><td><button class="btn sm" onclick="editCliente('${c.id}')">Editar</button></td></tr>`).join('')}</table>`:'<div class="empty">Nenhum cliente cadastrado.</div>'}</div>`;
+}
+function editCliente(id){
+  const c=id?cli(id):{};
+  openDlg(`<h2>${id?'Editar cliente':'Novo cliente'}</h2><div class="fgrid">
+   <label class="full">Nome / Razão social<input name="nome" required value="${esc(c.nome)}"></label>
+   <label>CPF / CNPJ<input name="doc" value="${esc(c.doc)}"></label>
+   <label>Telefone<input name="tel" value="${esc(c.tel)}"></label>
+   <label>E-mail<input name="email" type="email" value="${esc(c.email)}"></label>
+   <label>Município/UF<input name="municipio" value="${esc(c.municipio||'Paracatu/MG')}"></label>
+   <label class="full">Estado civil / cônjuge / endereço (para qualificação)<input name="qualif" value="${esc(c.qualif)}"></label>
+  </div><div class="row" style="justify-content:flex-end"><button class="btn" value="cancel" formnovalidate>Cancelar</button><button class="btn pri" value="ok">Salvar</button></div>`,
+  f=>{Object.assign(c,f);delete c.ex;if(!id){c.id=uid();DB.clientes.push(c)}save();render();toast('Cliente salvo')});
+}
+
+/* ---- Dialog helper ---- */
+const dlg=document.getElementById('dlg'),dlgForm=document.getElementById('dlgForm');
+function openDlg(html,onOk,after){dlgForm.innerHTML=html;dlg.returnValue='';dlg.showModal();after&&after();
+  dlg.onclose=()=>{if(dlg.returnValue==='ok'){const f=Object.fromEntries(new FormData(dlgForm));onOk(f)}}}
+
+/* ---- Mapa ---- */
+let drawMode=false,drawPts=[],drawLayer=null;
+function vMapa(){
+  if(!SEL&&DB.imoveis[0])SEL=DB.imoveis[0].id;
+  const im=DB.imoveis.find(i=>i.id===SEL);const g=im&&geom(im);
+  main.innerHTML=head('Geoprocessamento','Mapa',`<button class="btn" onclick="importPts()">Importar pontos</button><button class="btn" onclick="exportGeo()">Exportar KML</button>`)+
+  `<div class="mapwrap"><div class="mapside"><div class="hd"><input id="mq" placeholder="Filtrar imóveis…">
+   ${im?`<div><b>${esc(im.nome)}</b> ${pill(im.status)}<div class="hint">${esc(cli(im.clienteId)?.nome)} · Mat. ${esc(im.matricula)}</div>
+   ${g?`<div class="mono" style="margin-top:6px">Área SGL: <b>${ha(g.areaSGL)} ha</b><br>Área UTM: ${ha(g.areaUTM)} ha<br>Perímetro: ${nf(g.perSGL)} m<br>Vértices: ${im.vertices.length} · Fuso ${g.zone}S</div>`:'<div class="hint" style="margin-top:6px">Sem polígono. Importe pontos ou desenhe no mapa.</div>'}</div>`:''}
+   </div><div class="plist" id="plist"></div></div>
+   <div class="mapcol"><div id="map"></div>
+   <div class="maptool"><button class="btn sm" id="bDraw">Desenhar polígono</button><button class="btn sm" id="bFit">Enquadrar</button></div>
+   <div class="coordbar" id="cbar">Mova o cursor sobre o mapa</div></div></div>`;
+  const pl=()=>{const q=(document.getElementById('mq').value||'').toLowerCase();
+    document.getElementById('plist').innerHTML=DB.imoveis.filter(i=>!q||i.nome.toLowerCase().includes(q)).map(i=>{const gg=geom(i);return `<button aria-selected="${i.id===SEL}" onclick="go('mapa','${i.id}')"><b>${esc(i.nome)}</b><small>${esc(cli(i.clienteId)?.nome)} · ${gg?ha(gg.areaSGL)+' ha':'sem polígono'}</small></button>`}).join('')||'<div class="empty">Nenhum imóvel.</div>'};
+  document.getElementById('mq').oninput=pl;pl();
+  if(typeof L==='undefined'){document.getElementById('map').innerHTML='<div class="empty" style="color:#fff">Biblioteca de mapas indisponível. Verifique a conexão.</div>';return}
+  map=L.map('map',{zoomControl:true}).setView([-17.22,-46.87],11);
+  const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:20,maxNativeZoom:19,attribution:'Imagens © Esri, Maxar, Earthstar Geographics'});
+  const lbl=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',{maxZoom:20,maxNativeZoom:19});
+  const osm=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'});
+  const topo=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'© OpenTopoMap'});
+  const wms=(t)=>L.tileLayer.wms('https://acervofundiario.incra.gov.br/i3geo/ogc.php?tema='+t,{layers:t,format:'image/png',transparent:true,version:'1.1.1',attribution:'INCRA'});
+  sat.addTo(map);lbl.addTo(map);
+  let fails=0;sat.on('tileerror',()=>{if(++fails===4&&!document.querySelector('.mapnote')){const n=document.createElement('div');n.className='mapnote';n.innerHTML='<b>Imagens de satélite bloqueadas nesta visualização.</b> Abra o portal pelo GitHub Pages para carregar as imagens Esri em alta resolução.';document.querySelector('.mapcol').appendChild(n)}});
+  L.control.layers({'Satélite (Esri alta resolução)':sat,'OpenStreetMap':osm,'Topográfico':topo},{'Rótulos e limites':lbl,'SIGEF particular MG (INCRA)':wms('certificada_sigef_particular_mg'),'SNCI privado MG (INCRA)':wms('imoveiscertificados_privado_mg')},{collapsed:true}).addTo(map);
+  L.control.scale({imperial:false}).addTo(map);
+  const all=L.featureGroup().addTo(map);
+  DB.imoveis.forEach(i=>{if((i.vertices||[]).length<3)return;const on=i.id===SEL;
+    const p=L.polygon(i.vertices.map(v=>[v.lat,v.lon]),{color:on?'#F0C43A':'#7fe0b8',weight:on?3:2,fillOpacity:on?.12:.06}).addTo(all);
+    p.bindTooltip(esc(i.nome));p.on('click',()=>go('mapa',i.id));
+    if(on)i.vertices.forEach(v=>L.circleMarker([v.lat,v.lon],{radius:4,color:'#111',weight:1,fillColor:v.tipo==='P'?'#ff6b5b':'#F0C43A',fillOpacity:1}).addTo(all).bindTooltip(v.cod,{permanent:map.getZoom()>13,direction:'right',className:'vlabel'}).bindPopup(`<b>${esc(v.cod)}</b><br>${vcoord(v,i.fuso)}`));
+  });
+  const fit=()=>{const sel=DB.imoveis.find(i=>i.id===SEL);if(sel&&sel.vertices?.length>2)map.fitBounds(L.latLngBounds(sel.vertices.map(v=>[v.lat,v.lon])).pad(.25));else if(all.getLayers().length)map.fitBounds(all.getBounds().pad(.1))};fit();
+  document.getElementById('bFit').onclick=fit;
+  map.on('mousemove',e=>{const u=ll2utm(e.latlng.lat,e.latlng.lng);document.getElementById('cbar').textContent=`E ${nf(u.E,2)}  N ${nf(u.N,2)}  (${u.zone}S)  ·  ${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`});
+  const bd=document.getElementById('bDraw');drawMode=false;drawPts=[];
+  bd.onclick=()=>{if(!drawMode){drawMode=true;drawPts=[];bd.classList.add('on');bd.textContent='Clique os vértices · clique aqui p/ concluir';map.getContainer().style.cursor='crosshair'}
+    else{drawMode=false;bd.classList.remove('on');bd.textContent='Desenhar polígono';map.getContainer().style.cursor='';
+      if(drawPts.length>=3)assignVerts(drawPts.map(p=>({lat:p.lat,lon:p.lng})));else if(drawLayer){drawLayer.remove()}}};
+  map.on('click',e=>{if(!drawMode)return;drawPts.push(e.latlng);if(drawLayer)drawLayer.remove();drawLayer=L.polygon(drawPts,{color:'#ff6b5b',dashArray:'5 4'}).addTo(map)});
+}
+function vcoord(v,z){const u=ll2utm(v.lat,v.lon,z);return `<span class="mono">E ${nf(u.E,3)}<br>N ${nf(u.N,3)}<br>${dmsLat(v.lat)}<br>${dmsLat(v.lon,'W','E')}</span>`}
+function assignVerts(vs,name){
+  const opts=DB.imoveis.map(i=>`<option value="${i.id}" ${i.id===SEL?'selected':''}>${esc(i.nome)}</option>`).join('');
+  openDlg(`<h2>Aplicar ${vs.length} vértices</h2><p class="hint">${name?esc(name)+' · ':''}Os vértices substituem o polígono atual do imóvel escolhido. Códigos sem prefixo recebem DCCM-M-0001, DCCM-M-0002…</p>
+   <label>Imóvel<select name="im">${opts}</select></label><label>Confrontante padrão<input name="confr" placeholder="Opcional"></label>
+   <div class="row" style="justify-content:flex-end"><button class="btn" value="cancel" formnovalidate>Cancelar</button><button class="btn pri" value="ok">Aplicar</button></div>`,
+   f=>{const im=DB.imoveis.find(i=>i.id===f.im);im.vertices=vs.map((v,k)=>({cod:v.cod||`DCCM-M-${String(k+1).padStart(4,'0')}`,tipo:(v.cod||'').includes('-P-')?'P':(v.cod||'').includes('-V-')?'V':'M',metodo:v.metodo||'PG6',limite:'LA1',sigma:[.02,.02,.04],confr:v.confr||f.confr||'',lat:v.lat,lon:v.lon,h:v.h||0}));
+     delete im.ex;save();SEL=im.id;render();toast('Polígono atualizado')});
+}
+function parsePts(txt,fname){
+  if(/\.kml$/i.test(fname)||/<kml/i.test(txt)){const m=[...txt.matchAll(/<coordinates>([\s\S]*?)<\/coordinates>/gi)];if(!m.length)return [];
+    const pts=m[0][1].trim().split(/\s+/).map(s=>s.split(',').map(Number)).map(([lon,lat,h])=>({lat,lon,h:h||0}));
+    if(pts.length>1&&pts[0].lat===pts.at(-1).lat&&pts[0].lon===pts.at(-1).lon)pts.pop();return pts}
+  if(/\.(geo)?json$/i.test(fname)){const j=JSON.parse(txt);const f=j.features?j.features[0]:j;const g=f.geometry||f;let c=g.type==='Polygon'?g.coordinates[0]:g.type==='MultiPolygon'?g.coordinates[0][0]:[];
+    c=c.map(([lon,lat])=>({lat,lon}));if(c.length>1&&c[0].lat===c.at(-1).lat)c.pop();return c}
+  const zone=+(document.getElementById('impZone')?.value||23);const out=[];
+  txt.split(/\r?\n/).forEach(line=>{line=line.trim();if(!line)return;let sep=line.includes(';')?';':line.includes('\t')?'\t':line.split(',').length>=3&&!/\d,\d{1,3}\s*$/.test(line)?',':/\s/;
+    let p=line.split(sep).map(s=>s.trim());if(sep===';'||sep==='\t'||sep instanceof RegExp)p=p.map(s=>/^-?\d+,\d+$/.test(s)?s.replace(',','.'):s);
+    const nums=p.map(Number);let idx=nums.findIndex((n,i)=>!isNaN(n)&&!isNaN(nums[i+1])&&p[i]!==''&&p[i+1]!=='');if(idx<0)return;
+    const a=nums[idx],b=nums[idx+1],cod=idx>0?p[0]:'',h=!isNaN(nums[idx+2])?nums[idx+2]:0,conf=p.slice(idx+3).find(s=>isNaN(Number(s)))||'';
+    if(Math.abs(a)>1000&&Math.abs(b)>1000){const [E,N]=a<b?[a,b]:[b,a];const ll=utm2ll(E,N,zone,true);out.push({cod,lat:ll.lat,lon:ll.lon,h,confr:conf})}
+    else if(Math.abs(a)<=90&&Math.abs(b)<=180){out.push({cod,lat:a,lon:b,h,confr:conf})}});
+  return out;
+}
+function importPts(){
+  openDlg(`<h2>Importar pontos</h2><p class="hint">Aceita TXT/CSV do receptor GNSS ou da estação total (<span class="mono">código;E;N;h</span> em UTM, ou <span class="mono">código;lat;lon</span> em graus decimais), além de KML e GeoJSON. Separadores ; , tab ou espaço. Coordenadas UTM consideradas no hemisfério Sul, SIRGAS 2000.</p>
+   <div class="fgrid"><label>Fuso UTM dos dados<select id="impZone" name="z"><option>22</option><option selected>23</option><option>24</option></select></label><label>Arquivo<button class="btn" type="button" id="impFile">Escolher arquivo…</button></label>
+   <label class="full">Ou cole as coordenadas<textarea name="t" id="impTxt" placeholder="DCCM-M-0001;312456.123;8095432.456;690.12&#10;DCCM-M-0002;312890.004;8095611.870;688.40&#10;DCCM-M-0003;313100.550;8095102.300;692.05"></textarea></label></div>
+   <div class="row" style="justify-content:flex-end"><button class="btn" value="cancel" formnovalidate>Cancelar</button><button class="btn pri" value="ok">Continuar</button></div>`,
+   f=>{const pts=parsePts(f.t,'colado.txt');if(pts.length<3)return toast('São necessários pelo menos 3 pontos válidos');setTimeout(()=>assignVerts(pts,'Texto colado'),50)},
+   ()=>{document.getElementById('impFile').onclick=()=>pickFile('.csv,.txt,.kml,.geojson,.json',(txt,name)=>{const pts=parsePts(txt,name);dlg.close();if(pts.length<3)return toast('Não encontrei 3 ou mais pontos válidos em '+name);setTimeout(()=>assignVerts(pts,name),50)})});
+}
+function exportGeo(){
+  const pm=DB.imoveis.filter(i=>i.vertices?.length>2).map(i=>`<Placemark><name>${esc(i.nome)}</name><description>${esc(cli(i.clienteId)?.nome)} - Mat. ${esc(i.matricula)}</description><Style><LineStyle><color>ff06a4d9</color><width>2</width></LineStyle><PolyStyle><color>2006a4d9</color></PolyStyle></Style><Polygon><outerBoundaryIs><LinearRing><coordinates>${[...i.vertices,i.vertices[0]].map(v=>`${v.lon},${v.lat},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>`).join('');
+  download('terra-geotecnologia-imoveis.kml',`<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Terra Geotecnologia</name>${pm}</Document></kml>`,'application/vnd.google-earth.kml+xml');toast('KML gerado')
+}
+
+/* ---- Peças técnicas ---- */
+let PECA='memorial';
+function vPecas(){
+  if(!SEL&&DB.imoveis[0])SEL=DB.imoveis[0].id;const im=DB.imoveis.find(i=>i.id===SEL);
+  main.innerHTML=head('Documentação','Peças técnicas',`<select id="pim">${DB.imoveis.map(i=>`<option value="${i.id}" ${i.id===SEL?'selected':''}>${esc(i.nome)}</option>`).join('')}</select>`)+
+   `<div class="row" role="tablist">${[['memorial','Memorial descritivo'],['tabela','Tabela de vértices e segmentos'],['sigef','Planilha SIGEF (vértices)']].map(([k,l])=>`<button class="btn ${PECA===k?'pri':''}" onclick="PECA='${k}';render()">${l}</button>`).join('')}</div><div id="peca"></div>`;
+  document.getElementById('pim').onchange=e=>{SEL=e.target.value;render()};
+  const box=document.getElementById('peca');const g=im&&geom(im);
+  if(!g){box.innerHTML='<div class="panel empty">Este imóvel ainda não tem polígono. Importe os pontos no <a href="#" onclick="go(\'mapa\');return false">Mapa</a>.</div>';return}
+  if(PECA==='memorial'){const t=memorial(im,g);box.innerHTML=`<div class="row"><button class="btn" onclick="copy(document.getElementById('memo').innerText)">Copiar texto</button><button class="btn" onclick="download('memorial-${slug(im.nome)}.txt',document.getElementById('memo').innerText)">Baixar .txt</button><button class="btn" onclick="download('memorial-${slug(im.nome)}.doc','<html><meta charset=utf-8><body style=\\'font-family:Times New Roman;font-size:12pt\\'>'+document.getElementById('memo').innerHTML.replace(/\\n/g,'<br>')+'</body></html>','application/msword')">Baixar .doc</button></div><div class="memorial" id="memo">${t}</div>`}
+  if(PECA==='tabela'){box.innerHTML=`<div class="panel tablewrap"><table><tr><th>Vértice</th><th>Tipo</th><th>E (m)</th><th>N (m)</th><th>Latitude</th><th>Longitude</th><th>Azimute</th><th>Distância (m)</th><th>Próximo</th><th>Confrontante</th></tr>${im.vertices.map((v,k)=>{const u=g.utm[k],s=g.segs[k],nx=im.vertices[(k+1)%im.vertices.length];return `<tr><td class="mono">${esc(v.cod)}</td><td>${v.tipo}</td><td class="num">${nf(u.x,3)}</td><td class="num">${nf(u.y,3)}</td><td class="num">${dmsLat(v.lat)}</td><td class="num">${dmsLat(v.lon,'W','E')}</td><td class="num">${dms(s.az)}</td><td class="num">${nf(s.d)}</td><td class="mono">${esc(nx.cod)}</td><td>${esc(v.confr)}</td></tr>`}).join('')}</table>
+   <p class="hint" style="margin-top:10px">Área SGL ${ha(g.areaSGL)} ha · Área UTM ${ha(g.areaUTM)} ha · Perímetro ${nf(g.perUTM)} m · SIRGAS 2000, UTM fuso ${g.zone}S (MC ${mc(g.zone)}°). Azimutes e distâncias no plano UTM.</p></div>`}
+  if(PECA==='sigef'){const csv=sigefCsv(im);box.innerHTML=`<div class="panel"><p class="hint" style="margin-bottom:10px">Colunas na ordem da aba <b>perimetro</b> da planilha ODS do SIGEF (3ª edição da NTGIR): código, longitude, sigma long., latitude, sigma lat., altitude, sigma alt., método de posicionamento, tipo de limite, CNS, matrícula, descrição do confrontante. Copie e cole na planilha oficial e confira antes do envio.</p>
+   <div class="row" style="margin-bottom:10px"><button class="btn" onclick="copy(document.getElementById('sgf').value)">Copiar</button><button class="btn" onclick="download('sigef-${slug(im.nome)}.csv',document.getElementById('sgf').value,'text/csv')">Baixar .csv</button></div>
+   <textarea id="sgf" style="width:100%;min-height:260px" readonly>${esc(csv)}</textarea>
+   <div class="hint" style="margin-top:10px"><b>Métodos:</b> PG1–PG9 (geodésicos), PT1–PT7 (topográficos), PA1–PA3, PS1–PS4, PB1–PB2 (sensoriamento/base cartográfica). <b>Limites:</b> LA1–LA7 (artificiais), LN1–LN6 (naturais).</div></div>`}
+}
+const slug=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-');
+function sigefCsv(im){const tab='\t',dd=x=>x.toFixed(9).replace('.',',');
+  return ['codigo\tlongitude\tsigma_x\tlatitude\tsigma_y\taltitude\tsigma_z\tmetodo_posicionamento\ttipo_limite\tcns\tmatricula\tdescricao_limite']
+  .concat(im.vertices.map(v=>[v.cod,dd(v.lon),(v.sigma?.[0]??.02).toFixed(2).replace('.',','),dd(v.lat),(v.sigma?.[1]??.02).toFixed(2).replace('.',','),(v.h||0).toFixed(2).replace('.',','),(v.sigma?.[2]??.04).toFixed(2).replace('.',','),v.metodo||'PG6',v.limite||'LA1',im.cns||'',im.matricula||'',v.confr||''].join(tab))).join('\n')}
+function memorial(im,g){
+  const c=cli(im.clienteId)||{},vs=im.vertices,z=g.zone;
+  const pt=k=>{const u=g.utm[k];return `${esc(vs[k].cod)}, de coordenadas N ${nf(u.y,3)} m e E ${nf(u.x,3)} m`};
+  let t=`<img src="${LOGO}" alt="Terra Geotecnologia" style="width:260px;display:block;margin:0 auto 14px;background:#fff;padding:4px"><h3>MEMORIAL DESCRITIVO</h3>\n<b>Imóvel:</b> ${esc(im.nome)}\n<b>Proprietário:</b> ${esc(c.nome)}${c.doc?' — CPF/CNPJ '+esc(c.doc):''}\n<b>Município/UF:</b> ${esc(im.municipio)}\n<b>Matrícula:</b> ${esc(im.matricula)}${im.cns?' — CNS '+esc(im.cns):''}\n${im.ccir?'<b>Código INCRA/SNCR:</b> '+esc(im.ccir)+'\n':''}<b>Área (SGL):</b> ${ha(g.areaSGL)} ha    <b>Perímetro:</b> ${nf(g.perUTM)} m\n\n`;
+  t+=`Inicia-se a descrição deste perímetro no vértice ${pt(0)}; `;let last=null;
+  vs.forEach((v,k)=>{const n=(k+1)%vs.length,s=g.segs[k];const conf=v.confr&&v.confr!==last?`deste, segue confrontando com ${esc(v.confr)}, com o seguinte azimute e distância: `:'deste, segue com azimute e distância: ';last=v.confr;
+    t+=`${conf}${dms(s.az)} e ${nf(s.d)} m até o vértice ${n===0?esc(vs[0].cod):pt(n)}${n===0?', ponto inicial da descrição deste perímetro.':'; '}`});
+  t+=`\n\nTodas as coordenadas aqui descritas estão georreferenciadas ao Sistema Geodésico Brasileiro, e encontram-se representadas no Sistema UTM, referenciadas ao Meridiano Central ${Math.abs(mc(z))}° WGr, fuso ${z}, tendo como datum o SIRGAS 2000. Todos os azimutes e distâncias e o perímetro foram calculados no plano de projeção UTM; a área foi calculada no Sistema Geodésico Local (SGL), conforme o Manual Técnico para Georreferenciamento de Imóveis Rurais do INCRA.\n\nParacatu/MG, ${new Date().toLocaleDateString('pt-BR',{day:'numeric',month:'long',year:'numeric'})}.\n\n\n____________________________________\nAndré Ricardo Nascimento Costa\nTécnico em Agrimensura — CRT/MG 94464634672\nCredenciado INCRA — código DCCM\nTerra Geotecnologia`;
+  return t;
+}
+
+/* ---- Consultas ---- */
+function vConsultas(){
+  const L2=[['SIGEF — Consulta de parcelas','https://sigef.incra.gov.br/consultar/parcelas/','Parcelas certificadas por código, CPF/CNPJ, denominação ou credenciado.'],
+  ['SIGEF — Acesso do credenciado','https://sigef.incra.gov.br/','Envio de ODS, requerimentos e acompanhamento de certificações.'],
+  ['Acervo Fundiário INCRA','https://acervofundiario.incra.gov.br/acervo/acv.php','Mapa com SIGEF, SNCI, assentamentos e glebas públicas. Download de shapefiles por estado.'],
+  ['SICAR — Consulta pública do CAR','https://consultapublica.car.gov.br/publico/imoveis/index','Situação e demonstrativo do CAR pelo número do recibo.'],
+  ['SNCR — Emissão/consulta do CCIR','https://sncr.serpro.gov.br/ccir/emissao','CCIR e situação cadastral do imóvel no INCRA.'],
+  ['CNIR / CAFIR — Receita Federal','https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/cafir','Cadastro de imóveis rurais e NIRF/ITR.'],
+  ['IDE-Sisema (MG)','https://idesisema.meioambiente.mg.gov.br/','Camadas ambientais de Minas Gerais: APP, UCs, hidrografia, uso do solo.'],
+  ['ONR — Serviço de Atendimento Eletrônico','https://registradores.onr.org.br/','Pedido de certidões e protocolo eletrônico nos cartórios.'],
+  ['IBGE — PPP (pós-processamento GNSS)','https://www.ibge.gov.br/geociencias/informacoes-sobre-posicionamento-geodesico/servicos-para-posicionamento-geodesico/16334-servico-online-para-pos-processamento-de-dados-gnss-ibge-ppp.html','Processamento de observações RINEX em SIRGAS 2000.'],
+  ['IBGE — RBMC','https://www.ibge.gov.br/geociencias/informacoes-sobre-posicionamento-geodesico/rede-geodesica/16258-rede-brasileira-de-monitoramento-continuo-dos-sistemas-gnss-rbmc.html','Dados das estações de referência (ex.: MGPA, MGUB, GOUR).'],
+  ['Manual Técnico / NTGIR 3ª ed.','https://www.gov.br/incra/pt-br/assuntos/governanca-fundiaria/certificacao-de-imoveis-rurais','Normas técnicas e manuais de georreferenciamento do INCRA.'],
+  ['Google Earth Web','https://earth.google.com/web/@-17.22,-46.87,700a,20000d,35y,0h,0t,0r','Conferência visual com imagens históricas.']];
+  main.innerHTML=head('Bases oficiais','Consultas',``)+
+  `<div class="panel"><h3>Conversor de coordenadas · SIRGAS 2000</h3><div class="fgrid" style="margin-top:10px">
+   <label>Latitude (graus decimais)<input id="cLat" value="-17.221900"></label><label>Longitude (graus decimais)<input id="cLon" value="-46.874800"></label>
+   <label>E (m)<input id="cE"></label><label>N (m)<input id="cN"></label><label>Fuso<select id="cZ"><option>22</option><option selected>23</option><option>24</option></select></label>
+   <div class="row" style="align-items:flex-end"><button class="btn" id="cA">Geográfica → UTM</button><button class="btn" id="cB">UTM → Geográfica</button></div></div><p class="hint mono" id="cOut" style="margin-top:8px"></p></div>
+   <div class="links">${L2.map(([n,u,d])=>`<a href="${u}" target="_blank" rel="noopener"><b>${n}</b><span>${d}</span></a>`).join('')}</div>`;
+  const $=id=>document.getElementById(id);
+  const A=()=>{const la=+$('cLat').value.replace(',','.'),lo=+$('cLon').value.replace(',','.'),u=ll2utm(la,lo,+$('cZ').value);$('cE').value=u.E.toFixed(3);$('cN').value=u.N.toFixed(3);$('cOut').textContent=`${dmsLat(la)}  ${dmsLat(lo,'W','E')}  →  E ${nf(u.E,3)}  N ${nf(u.N,3)}  fuso ${u.zone}S`};
+  const B=()=>{const r=utm2ll(+$('cE').value.replace(',','.'),+$('cN').value.replace(',','.'),+$('cZ').value,true);$('cLat').value=r.lat.toFixed(8);$('cLon').value=r.lon.toFixed(8);$('cOut').textContent=`${dmsLat(r.lat)}  ${dmsLat(r.lon,'W','E')}`};
+  $('cA').onclick=A;$('cB').onclick=B;A();
+}
+
+/* ---- Tema ---- */
+document.getElementById('btnTheme').onclick=()=>{const r=document.documentElement,cur=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');r.dataset.theme=cur==='dark'?'light':'dark';try{localStorage.setItem(KEY+'-theme',r.dataset.theme)}catch(e){}};
+try{const t=localStorage.getItem(KEY+'-theme');if(t)document.documentElement.dataset.theme=t;const v=localStorage.getItem(KEY+'-view');if(v)VIEW=v}catch(e){}
+go(location.hash.slice(1)&&['painel','servicos','clientes','mapa','pecas','consultas'].includes(location.hash.slice(1))?location.hash.slice(1):VIEW);
+</script>
+
+</body>
+</html>
