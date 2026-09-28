@@ -452,7 +452,7 @@ function sigefCsv(im){const tab='\t',dd=x=>x.toFixed(9).replace('.',',');
 function memorial(im,g){
   const c=cli(im.clienteId)||{},vs=im.vertices,z=g.zone;
   const pt=k=>{const u=g.utm[k];return `${esc(vs[k].cod)}, de coordenadas N ${nf(u.y,3)} m e E ${nf(u.x,3)} m`};
-  let t=`<div style="width:300px;max-width:100%;margin:0 auto 14px">${LOGO_SVG}</div><h3>MEMORIAL DESCRITIVO</h3>\n<b>Imóvel:</b> ${esc(im.nome)}\n<b>Proprietário:</b> ${esc(c.nome)}${c.doc?' — CPF/CNPJ '+esc(c.doc):''}\n<b>Município/UF:</b> ${esc(im.municipio)}\n<b>Matrícula:</b> ${esc(im.matricula)}${im.cns?' — CNS '+esc(im.cns):''}\n${im.ccir?'<b>Código INCRA/SNCR:</b> '+esc(im.ccir)+'\n':''}<b>Área (SGL):</b> ${ha(g.areaSGL)} ha    <b>Perímetro:</b> ${nf(g.perUTM)} m\n\n`;
+  let t=`<div style="width:320px;max-width:100%;margin:0 auto 14px;background:#fff;padding:8px 10px;border-radius:6px">${LOGO_SVG}</div><h3>MEMORIAL DESCRITIVO</h3>\n<b>Imóvel:</b> ${esc(im.nome)}\n<b>Proprietário:</b> ${esc(c.nome)}${c.doc?' — CPF/CNPJ '+esc(c.doc):''}\n<b>Município/UF:</b> ${esc(im.municipio)}\n<b>Matrícula:</b> ${esc(im.matricula)}${im.cns?' — CNS '+esc(im.cns):''}\n${im.ccir?'<b>Código INCRA/SNCR:</b> '+esc(im.ccir)+'\n':''}<b>Área (SGL):</b> ${ha(g.areaSGL)} ha    <b>Perímetro:</b> ${nf(g.perUTM)} m\n\n`;
   t+=`Inicia-se a descrição deste perímetro no vértice ${pt(0)}; `;let last=null;
   vs.forEach((v,k)=>{const n=(k+1)%vs.length,s=g.segs[k];const conf=v.confr&&v.confr!==last?`deste, segue confrontando com ${esc(v.confr)}, com o seguinte azimute e distância: `:'deste, segue com azimute e distância: ';last=v.confr;
     t+=`${conf}${dms(s.az)} e ${nf(s.d)} m até o vértice ${n===0?esc(vs[0].cod):pt(n)}${n===0?', ponto inicial da descrição deste perímetro.':'; '}`});
