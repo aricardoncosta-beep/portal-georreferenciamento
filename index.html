@@ -99,6 +99,7 @@ td.num{text-align:right;white-space:nowrap}
 .mapnote{position:absolute;z-index:500;top:52px;left:54px;right:60px;background:var(--accent-soft);color:var(--ink);border:1px solid var(--accent);padding:8px 10px;border-radius:6px;font-size:13px;max-width:460px}
 .vlabel{background:none;border:0;box-shadow:none;color:#fff;font:600 11px var(--f-mono);text-shadow:0 0 3px #000,0 0 3px #000}
 .leaflet-control-layers{font:13px var(--f-body)}
+.leaflet-control-layers-toggle{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2324473A' stroke-width='2'%3E%3Cpath d='M12 3 2 8l10 5 10-5z'/%3E%3Cpath d='m2 13 10 5 10-5'/%3E%3C/svg%3E")!important;background-size:24px!important;background-position:center!important;background-repeat:no-repeat!important}
 .leaflet-tooltip.vlabel::before{display:none}
 
 /* forms / dialog */
@@ -381,7 +382,7 @@ function vMapa(){
     p.bindTooltip(esc(i.nome));p.on('click',()=>go('mapa',i.id));
     if(on)i.vertices.forEach(v=>L.circleMarker([v.lat,v.lon],{radius:4,color:'#111',weight:1,fillColor:v.tipo==='P'?'#ff6b5b':'#F0C43A',fillOpacity:1}).addTo(all).bindTooltip(v.cod,{permanent:map.getZoom()>13,direction:'right',className:'vlabel'}).bindPopup(`<b>${esc(v.cod)}</b><br>${vcoord(v,i.fuso)}`));
   });
-  const fit=()=>{const sel=DB.imoveis.find(i=>i.id===SEL);if(sel&&sel.vertices?.length>2)map.fitBounds(L.latLngBounds(sel.vertices.map(v=>[v.lat,v.lon])).pad(.25));else if(all.getLayers().length)map.fitBounds(all.getBounds().pad(.1))};fit();
+  const fit=()=>{const sel=DB.imoveis.find(i=>i.id===SEL);if(sel&&sel.vertices?.length>2)map.fitBounds(L.latLngBounds(sel.vertices.map(v=>[v.lat,v.lon])).pad(.25));else if(all.getLayers().length)map.fitBounds(all.getBounds().pad(.1))};setTimeout(()=>{map.invalidateSize();fit()},80);
   document.getElementById('bFit').onclick=fit;
   map.on('mousemove',e=>{const u=ll2utm(e.latlng.lat,e.latlng.lng);document.getElementById('cbar').textContent=`E ${nf(u.E,2)}  N ${nf(u.N,2)}  (${u.zone}S)  ·  ${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`});
   const bd=document.getElementById('bDraw');drawMode=false;drawPts=[];
