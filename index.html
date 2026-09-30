@@ -166,7 +166,7 @@ textarea{min-height:120px;font-family:var(--f-mono);font-size:13px}
 </div>
 
 <dialog id="dlg"><form method="dialog" id="dlgForm"></form></dialog>
-<input type="file" id="fileIn" hidden accept=".csv,.txt,.kml,.geojson,.json">
+<input type="file" id="fileIn" hidden accept=".csv,.txt,.kml,.geojson,.json,.dxf,.zip,.shp,.dbf,.prj">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
@@ -354,7 +354,7 @@ let drawMode=false,drawPts=[],drawLayer=null;
 function vMapa(){
   if(!SEL&&DB.imoveis[0])SEL=DB.imoveis[0].id;
   const im=DB.imoveis.find(i=>i.id===SEL);const g=im&&geom(im);
-  main.innerHTML=head('Geoprocessamento','Mapa',`<button class="btn" onclick="importPts()">Importar pontos</button><button class="btn" onclick="exportGeo()">Exportar KML</button>`)+
+  main.innerHTML=head('Geoprocessamento','Mapa',`<button class="btn" onclick="importPts()">Importar pontos</button><button class="btn" onclick="importPts(true)">Importar DXF / Shapefile</button><button class="btn" onclick="exportGeo()">Exportar KML</button>`)+
   `<div class="mapwrap"><div class="mapside"><div class="hd"><input id="mq" placeholder="Filtrar imóveis…">
    ${im?`<div><b>${esc(im.nome)}</b> ${pill(im.status)}<div class="hint">${esc(cli(im.clienteId)?.nome)} · Mat. ${esc(im.matricula)}</div>
    ${g?`<div class="mono" style="margin-top:6px">Área SGL: <b>${ha(g.areaSGL)} ha</b><br>Área UTM: ${ha(g.areaUTM)} ha<br>Perímetro: ${nf(g.perSGL)} m<br>Vértices: ${im.vertices.length} · Fuso ${g.zone}S</div>`:'<div class="hint" style="margin-top:6px">Sem polígono. Importe pontos ou desenhe no mapa.</div>'}</div>`:''}
@@ -415,13 +415,145 @@ function parsePts(txt,fname){
     else if(Math.abs(a)<=90&&Math.abs(b)<=180){out.push({cod,lat:a,lon:b,h,confr:conf})}});
   return out;
 }
-function importPts(){
-  openDlg(`<h2>Importar pontos</h2><p class="hint">Aceita TXT/CSV do receptor GNSS ou da estação total (<span class="mono">código;E;N;h</span> em UTM, ou <span class="mono">código;lat;lon</span> em graus decimais), além de KML e GeoJSON. Separadores ; , tab ou espaço. Coordenadas UTM consideradas no hemisfério Sul, SIRGAS 2000.</p>
-   <div class="fgrid"><label>Fuso UTM dos dados<select id="impZone" name="z"><option>22</option><option selected>23</option><option>24</option></select></label><label>Arquivo<button class="btn" type="button" id="impFile">Escolher arquivo…</button></label>
+function importPts(cad){
+  openDlg(`<h2>Importar pontos</h2><p class="hint">Aceita TXT/CSV do receptor GNSS ou da estação total (<span class="mono">código;E;N;h</span> em UTM, ou <span class="mono">código;lat;lon</span> em graus decimais), KML, GeoJSON, <b>DXF</b> (polilinhas, linhas, pontos e blocos com atributo de nome) e <b>Shapefile</b> (.zip ou .shp + .dbf + .prj juntos). O fuso do .prj tem prioridade; sem .prj vale o fuso escolhido abaixo. Separadores ; , tab ou espaço. Coordenadas UTM consideradas no hemisfério Sul, SIRGAS 2000.</p>
+   <div class="fgrid"><label>Fuso UTM dos dados<select id="impZone" name="z"><option>22</option><option selected>23</option><option>24</option></select></label><label>Arquivo de pontos<button class="btn" type="button" id="impFile">TXT, CSV, KML, GeoJSON…</button></label><label>Desenho / SIG<button class="btn" type="button" id="impCad">DXF ou Shapefile…</button></label>
    <label class="full">Ou cole as coordenadas<textarea name="t" id="impTxt" placeholder="DCCM-M-0001;312456.123;8095432.456;690.12&#10;DCCM-M-0002;312890.004;8095611.870;688.40&#10;DCCM-M-0003;313100.550;8095102.300;692.05"></textarea></label></div>
    <div class="row" style="justify-content:flex-end"><button class="btn" value="cancel" formnovalidate>Cancelar</button><button class="btn pri" value="ok">Continuar</button></div>`,
    f=>{const pts=parsePts(f.t,'colado.txt');if(pts.length<3)return toast('São necessários pelo menos 3 pontos válidos');setTimeout(()=>assignVerts(pts,'Texto colado'),50)},
-   ()=>{document.getElementById('impFile').onclick=()=>pickFile('.csv,.txt,.kml,.geojson,.json',(txt,name)=>{const pts=parsePts(txt,name);dlg.close();if(pts.length<3)return toast('Não encontrei 3 ou mais pontos válidos em '+name);setTimeout(()=>assignVerts(pts,name),50)})});
+   ()=>{document.getElementById('impCad').onclick=importCad;if(cad)document.getElementById('impCad').focus();document.getElementById('impFile').onclick=()=>pickFile('.csv,.txt,.kml,.geojson,.json',(txt,name)=>{const pts=parsePts(txt,name);dlg.close();if(pts.length<3)return toast('Não encontrei 3 ou mais pontos válidos em '+name);setTimeout(()=>assignVerts(pts,name),50)})});
+}
+/* ---- Importação DXF e Shapefile (sem bibliotecas externas) ---- */
+function pickFiles(acc,cb){const f=document.getElementById('fileIn');f.accept=acc;f.multiple=true;f.value='';
+  f.onchange=async()=>{const fs=[...f.files];f.multiple=false;if(!fs.length)return;
+    try{cb(await Promise.all(fs.map(async x=>({name:x.name,buf:await x.arrayBuffer()}))))}catch(e){toast('Não consegui ler o arquivo: '+(e.message||e))}};f.click()}
+function decodeTxt(buf,cp){const u=new TextDecoder('utf-8').decode(buf);if(!cp&&!u.includes('�'))return u;try{return new TextDecoder(cp||'windows-1252').decode(buf)}catch(e){return u}}
+
+/* ZIP (store/deflate) via DecompressionStream */
+async function unzip(buf){const dv=new DataView(buf),out={};let e=-1;
+  for(let i=buf.byteLength-22;i>=Math.max(0,buf.byteLength-66000);i--)if(dv.getUint32(i,true)===0x06054b50){e=i;break}
+  if(e<0)throw new Error('ZIP inválido');let p=dv.getUint32(e+16,true);const n=dv.getUint16(e+10,true);
+  for(let k=0;k<n;k++){if(dv.getUint32(p,true)!==0x02014b50)break;
+    const meth=dv.getUint16(p+10,true),csz=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),xl=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),lo=dv.getUint32(p+42,true);
+    const name=new TextDecoder().decode(new Uint8Array(buf,p+46,nl));p+=46+nl+xl+cl;
+    if(name.endsWith('/'))continue;const ds=lo+30+dv.getUint16(lo+26,true)+dv.getUint16(lo+28,true);const raw=buf.slice(ds,ds+csz);
+    if(meth===0)out[name]=raw;else if(meth===8){if(typeof DecompressionStream==='undefined')throw new Error('navegador sem suporte a ZIP; extraia e selecione .shp, .dbf e .prj');
+      out[name]=await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer()}}
+  return out}
+
+/* Sistema de coordenadas a partir do .prj */
+function readPrj(t){if(!t)return null;const r={txt:t};
+  const z=t.match(/UTM[ _]?zone[ _]?(\d{1,2})\s*([NS])?/i);
+  if(z){r.utm=true;r.zone=+z[1];r.south=(z[2]||'S').toUpperCase()!=='N'}
+  else if(/PROJCS/i.test(t)){const cm=t.match(/central_meridian"?\s*,\s*(-?[\d.]+)/i),fn=t.match(/false_northing"?\s*,\s*([\d.]+)/i);
+    if(cm&&/transverse_mercator/i.test(t)){r.utm=true;r.zone=Math.round((+cm[1]+183)/6);r.south=fn?+fn[1]>0:true}else r.unsupported=true}
+  else r.geo=true;
+  if(/SAD[ _]?69|South_American_1969|Corrego|C[oó]rrego/i.test(t))r.datumWarn=(/SAD/i.test(t)?'SAD 69':'Córrego Alegre');
+  return r}
+
+/* Shapefile: .shp + .dbf (+ .prj/.cpg) */
+function parseShp(buf){const dv=new DataView(buf),recs=[];let p=100;
+  while(p+8<=buf.byteLength){const len=dv.getInt32(p+4)*2,c=p+8,t=dv.getInt32(c,true);p=c+len;if(t===0){recs.push(null);continue}
+    const base=t%10,hasZ=t>10&&t<20;
+    if(base===1){recs.push({type:'pt',parts:[[{x:dv.getFloat64(c+4,true),y:dv.getFloat64(c+12,true),z:hasZ?dv.getFloat64(c+20,true):0}]]});continue}
+    if(base===8){const np=dv.getInt32(c+36,true),pts=[];for(let i=0;i<np;i++)pts.push({x:dv.getFloat64(c+40+i*16,true),y:dv.getFloat64(c+48+i*16,true),z:0});
+      if(hasZ){const zo=c+40+np*16+16;pts.forEach((q,i)=>q.z=dv.getFloat64(zo+i*8,true))}recs.push({type:'pt',parts:[pts]});continue}
+    if(base===3||base===5){const nparts=dv.getInt32(c+36,true),np=dv.getInt32(c+40,true),pi=c+44,po=pi+nparts*4,idx=[];
+      for(let i=0;i<nparts;i++)idx.push(dv.getInt32(pi+i*4,true));idx.push(np);
+      const all=[];for(let i=0;i<np;i++)all.push({x:dv.getFloat64(po+i*16,true),y:dv.getFloat64(po+i*16+8,true),z:0});
+      if(hasZ){const zo=po+np*16+16;all.forEach((q,i)=>q.z=dv.getFloat64(zo+i*8,true))}
+      recs.push({type:base===5?'pol':'lin',parts:idx.slice(0,-1).map((s,i)=>all.slice(s,idx[i+1]))});continue}
+    recs.push(null)}
+  return recs}
+function parseDbf(buf,cp){if(!buf)return[];const dv=new DataView(buf),n=dv.getUint32(4,true),hl=dv.getUint16(8,true),rl=dv.getUint16(10,true),fl=[];
+  for(let o=32;o<hl-1&&dv.getUint8(o)!==0x0D;o+=32)fl.push({name:new TextDecoder('latin1').decode(new Uint8Array(buf,o,11)).replace(/\0.*$/,'').trim(),len:dv.getUint8(o+16)});
+  const u8=new TextDecoder('utf-8',{fatal:true}),w1=new TextDecoder('windows-1252'),dec={decode:b=>{if(cp!=='cp1252'){try{return u8.decode(b)}catch(e){}}return w1.decode(b)}},rows=[];
+  for(let r=0;r<n;r++){const o=hl+r*rl;if(o+rl>buf.byteLength)break;const row={};let q=o+1;fl.forEach(f=>{row[f.name]=dec.decode(new Uint8Array(buf,q,f.len)).trim();q+=f.len});rows.push(row)}
+  return rows}
+function shpFeatures(files){const by={};
+  Object.entries(files).forEach(([n,b])=>{const m=n.replace(/^.*[\/\\]/,'').match(/^(.*)\.(shp|dbf|prj|cpg)$/i);if(m){(by[m[1]]=by[m[1]]||{})[m[2].toLowerCase()]=b}});
+  const feats=[],warn=[];
+  Object.entries(by).forEach(([base,f])=>{if(!f.shp)return;
+    const prj=readPrj(f.prj&&decodeTxt(f.prj));const cp=f.cpg?(/utf-?8/i.test(decodeTxt(f.cpg))?'utf-8':'cp1252'):undefined;
+    if(!f.prj)warn.push(`${base}: sem arquivo .prj — usei o fuso escolhido abaixo.`);
+    if(prj&&prj.unsupported)warn.push(`${base}: projeção não reconhecida no .prj — tratei como UTM no fuso escolhido.`);
+    if(prj&&prj.datumWarn)warn.push(`${base}: datum ${prj.datumWarn}. O portal trabalha em SIRGAS 2000 e não converte datum — converta antes (QGIS/ProGriD) para evitar deslocamento.`);
+    const recs=parseShp(f.shp),rows=parseDbf(f.dbf,cp);
+    const lblKey=rows[0]&&(Object.keys(rows[0]).find(k=>/nome|name|denom|imovel|im[oó]vel|cod|id/i.test(k))||Object.keys(rows[0])[0]);
+    recs.forEach((r,i)=>{if(!r)return;const lbl=(rows[i]&&lblKey&&rows[i][lblKey])||`registro ${i+1}`;
+      if(r.type==='pt'){const pts=r.parts[0].map((q,k)=>({...q,cod:rows[i]?(rows[i][Object.keys(rows[i]).find(k2=>/cod|nome|name|id|ponto|vert/i.test(k2))]||''):''}));feats.push({src:base,kind:'pt',label:lbl,pts,crs:prj});return}
+      r.parts.forEach((pts,k)=>{if(pts.length>2&&pts[0].x===pts.at(-1).x&&pts[0].y===pts.at(-1).y)pts=pts.slice(0,-1);if(pts.length<2)return;const s=signedArea(pts);
+        feats.push({src:base,kind:r.type==='pol'?(s>0&&r.parts.length>1?'hole':'pol'):'lin',label:lbl+(r.parts.length>1?` · parte ${k+1}`:''),pts,crs:prj})})});
+  });
+  // pontos soltos (um registro por ponto) viram um único conjunto por arquivo
+  const out=[],pg={};feats.forEach(f=>{if(f.kind==='pt'&&f.pts.length===1){const g=pg[f.src]=pg[f.src]||{src:f.src,kind:'pt',label:'todos os pontos',pts:[],crs:f.crs};g.pts.push({...f.pts[0],cod:f.pts[0].cod||(f.label.startsWith('registro')?'':f.label)})}else out.push(f)});
+  return {feats:out.concat(Object.values(pg)),warn}}
+function signedArea(p){let s=0;for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length];s+=a.x*b.y-b.x*a.y}return s/2}
+
+/* DXF (ASCII): LWPOLYLINE, POLYLINE, LINE, POINT, INSERT(+ATTRIB), TEXT/MTEXT */
+function parseDxf(txt){const L=txt.split(/\r?\n/);if(/^AutoCAD Binary DXF/.test(L[0]||''))throw new Error('DXF binário não suportado — salve como DXF ASCII');
+  const pr=[];for(let i=0;i+1<L.length;i+=2)pr.push([+L[i].trim(),L[i+1].replace(/\s+$/,'')]);
+  let i=pr.findIndex((q,k)=>q[0]===2&&q[1].trim()==='ENTITIES'&&pr[k-1]&&pr[k-1][1].trim()==='SECTION');if(i<0)throw new Error('seção ENTITIES não encontrada');i++;
+  const ents=[];let cur=null;
+  for(;i<pr.length;i++){const [c,v]=pr[i];if(c===0){if(cur)ents.push(cur);if(v.trim()==='ENDSEC')break;cur={t:v.trim(),g:[]}}else if(cur)cur.g.push([c,v])}
+  const get=(e,c)=>{const q=e.g.find(x=>x[0]===c);return q?q[1]:undefined},num=(e,c)=>+(get(e,c)||0);
+  const polys=[],pts=[],texts=[],lines=[];
+  for(let k=0;k<ents.length;k++){const e=ents[k],lay=(get(e,8)||'0').trim();
+    if(e.t==='LWPOLYLINE'){const vs=[];let el=num(e,38);e.g.forEach(([c,v])=>{if(c===10)vs.push({x:+v,y:0,z:el});else if(c===20&&vs.length)vs.at(-1).y=+v});polys.push({layer:lay,closed:(num(e,70)&1)===1,pts:vs})}
+    else if(e.t==='POLYLINE'){const fl=num(e,70);if(fl&(16|64))continue;const vs=[];while(ents[k+1]&&ents[k+1].t==='VERTEX'){k++;const v=ents[k];if(num(v,70)&16)continue;vs.push({x:num(v,10),y:num(v,20),z:num(v,30)})}
+      if(ents[k+1]&&ents[k+1].t==='SEQEND')k++;polys.push({layer:lay,closed:(fl&1)===1,pts:vs})}
+    else if(e.t==='LINE')lines.push({layer:lay,a:{x:num(e,10),y:num(e,20),z:num(e,30)},b:{x:num(e,11),y:num(e,21),z:num(e,31)}});
+    else if(e.t==='POINT')pts.push({layer:lay,x:num(e,10),y:num(e,20),z:num(e,30),cod:''});
+    else if(e.t==='INSERT'){const p={layer:lay,x:num(e,10),y:num(e,20),z:num(e,30),cod:''};
+      while(ents[k+1]&&ents[k+1].t==='ATTRIB'){k++;const a=ents[k],tag=(get(a,2)||'').trim(),val=(get(a,1)||'').trim();if(val&&(!p.cod||/nome|name|cod|ponto|pt|id/i.test(tag)))p.cod=val}
+      if(ents[k+1]&&ents[k+1].t==='SEQEND')k++;pts.push(p)}
+    else if(e.t==='TEXT'||e.t==='MTEXT'){const s=(get(e,1)||'').replace(/\\[A-Za-z][^;]*;|[{}]/g,'').trim();if(s)texts.push({x:num(e,10),y:num(e,20),s})}}
+  // LINEs encadeadas em polilinhas
+  const tol=1e-3,eq=(a,b)=>Math.abs(a.x-b.x)<tol&&Math.abs(a.y-b.y)<tol,pool=lines.slice();
+  while(pool.length){const f=pool.shift(),ch=[f.a,f.b];let grown=true;
+    while(grown){grown=false;for(let j=0;j<pool.length;j++){const s=pool[j],end=ch.at(-1),st=ch[0];
+      if(s.layer!==f.layer)continue;
+      if(eq(s.a,end)){ch.push(s.b)}else if(eq(s.b,end)){ch.push(s.a)}else if(eq(s.b,st)){ch.unshift(s.a)}else if(eq(s.a,st)){ch.unshift(s.b)}else continue;
+      pool.splice(j,1);grown=true;break}}
+    const closed=ch.length>3&&eq(ch[0],ch.at(-1));if(closed)ch.pop();if(ch.length>=3||closed)polys.push({layer:f.layer,closed,pts:ch,fromLines:true})}
+  // códigos: ponto sem nome recebe o texto mais próximo (até 5 unidades)
+  pts.forEach(p=>{if(p.cod)return;let best=null,bd=5;texts.forEach(t=>{const d=Math.hypot(t.x-p.x,t.y-p.y);if(d<bd){bd=d;best=t}});if(best)p.cod=best.s});
+  // vértice de polilinha herda o código do ponto coincidente
+  polys.forEach(pl=>{if(pl.closed&&pl.pts.length>1&&eq(pl.pts[0],pl.pts.at(-1)))pl.pts.pop();
+    pl.pts.forEach(v=>{const m=pts.find(p=>Math.hypot(p.x-v.x,p.y-v.y)<0.05);if(m){v.cod=m.cod;if(!v.z)v.z=m.z}})});
+  const feats=polys.filter(p=>p.pts.length>=3).map(p=>({src:'DXF',kind:p.closed?'pol':'lin',label:'camada '+p.layer+(p.fromLines?' (linhas)':''),pts:p.pts}));
+  const byL={};pts.forEach(p=>{(byL[p.layer]=byL[p.layer]||[]).push(p)});
+  Object.entries(byL).forEach(([l,ps])=>{if(ps.length>=3)feats.push({src:'DXF',kind:'pt',label:'pontos da camada '+l,pts:ps})});
+  return {feats,warn:[]}}
+
+/* Converte uma feição (x/y) para vértices lat/lon do portal */
+function featToVerts(f,zone){const c=f.crs;const geo=c&&c.geo?true:c&&c.utm?false:Math.abs(f.pts[0].x)<=180&&Math.abs(f.pts[0].y)<=90;
+  const z=c&&c.utm?c.zone:zone,south=c&&c.utm?c.south:true;
+  return f.pts.map(p=>{const ll=geo?{lat:p.y,lon:p.x}:utm2ll(p.x,p.y,z,south);return {cod:p.cod||'',lat:ll.lat,lon:ll.lon,h:p.z||0}})}
+function featArea(vs){if(vs.length<3)return 0;const z=zoneOf(vs[0].lon);return shoelace(vs.map(v=>{const u=ll2utm(v.lat,v.lon,z);return {x:u.E,y:u.N}}))}
+
+async function importCad(){
+  pickFiles('.dxf,.zip,.shp,.dbf,.prj,.cpg,.shx',async files=>{
+    const zone=+(document.getElementById('impZone')?.value||23);dlg.close();
+    let res={feats:[],warn:[]};
+    try{
+      const dxf=files.filter(f=>/\.dxf$/i.test(f.name));
+      dxf.forEach(f=>{const r=parseDxf(decodeTxt(f.buf));r.feats.forEach(x=>x.src=f.name);res.feats.push(...r.feats)});
+      const shp={};for(const f of files){if(/\.zip$/i.test(f.name))Object.assign(shp,await unzip(f.buf));else if(/\.(shp|dbf|prj|cpg)$/i.test(f.name))shp[f.name]=f.buf}
+      if(Object.keys(shp).length){if(!Object.keys(shp).some(n=>/\.shp$/i.test(n)))throw new Error('o .shp não foi encontrado — selecione juntos .shp, .dbf e .prj, ou um .zip');
+        const r=shpFeatures(shp);res.feats.push(...r.feats);res.warn.push(...r.warn)}
+    }catch(e){return toast('Não consegui ler: '+(e.message||e))}
+    const cand=res.feats.map(f=>{const vs=featToVerts(f,zone);return {f,vs,area:f.kind==='lin'?0:featArea(vs)}}).filter(c=>c.vs.length>=3&&c.f.kind!=='hole');
+    if(!cand.length)return toast('Nenhum polígono, polilinha ou conjunto de 3+ pontos encontrado');
+    cand.sort((a,b)=>(b.f.kind==='pol')-(a.f.kind==='pol')||b.area-a.area);
+    const tipo={pol:'Polígono',lin:'Polilinha',pt:'Pontos'};
+    if(cand.length===1&&!res.warn.length){const c=cand[0];return setTimeout(()=>assignVerts(c.vs,c.f.src),50)}
+    setTimeout(()=>openDlg(`<h2>Escolha a feição</h2><p class="hint">${cand.length} feições encontradas. A escolhida vira o perímetro do imóvel; as coordenadas já foram convertidas para SIRGAS 2000 geográficas.</p>
+      ${res.warn.map(w=>`<div class="hint" style="color:var(--warn,#b7791f)">⚠ ${esc(w)}</div>`).join('')}
+      <div style="max-height:320px;overflow:auto;display:flex;flex-direction:column;gap:4px;margin:8px 0">${cand.slice(0,200).map((c,k)=>`<label style="display:flex;gap:8px;align-items:flex-start;font-weight:400"><input type="radio" name="fx" value="${k}" ${k===0?'checked':''} style="width:auto;margin-top:3px"><span><b>${tipo[c.f.kind]}</b> · ${esc(c.f.label)} · ${c.vs.length} vértices${c.area?` · ${ha(c.area)} ha`:''}<br><small class="hint">${esc(c.f.src)}${c.f.kind==='pt'?' — os pontos entram na ordem do arquivo; confira a sequência':''}</small></span></label>`).join('')}</div>
+      <div class="row" style="justify-content:flex-end"><button class="btn" value="cancel" formnovalidate>Cancelar</button><button class="btn pri" value="ok">Continuar</button></div>`,
+      fm=>{const c=cand[+fm.fx||0];setTimeout(()=>assignVerts(c.vs,c.f.src+' · '+c.f.label),50)}),50);
+  });
 }
 function exportGeo(){
   const pm=DB.imoveis.filter(i=>i.vertices?.length>2).map(i=>`<Placemark><name>${esc(i.nome)}</name><description>${esc(cli(i.clienteId)?.nome)} - Mat. ${esc(i.matricula)}</description><Style><LineStyle><color>ff06a4d9</color><width>2</width></LineStyle><PolyStyle><color>2006a4d9</color></PolyStyle></Style><Polygon><outerBoundaryIs><LinearRing><coordinates>${[...i.vertices,i.vertices[0]].map(v=>`${v.lon},${v.lat},0`).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>`).join('');
